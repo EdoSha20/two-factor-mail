@@ -1,3 +1,7 @@
+<script>
+    let { form } = $props();
+</script>
+
 <h1>Anmelden</h1>
 <p>Nach der Passwortprüfung bekommst du einen Code per E-Mail.</p>
 
@@ -22,6 +26,9 @@
 
     <button type="submit">Code senden</button>
 </form>
+{#if form?.message}
+    <p role="status">{form.message}</p>
+{/if}
 
 <style>
     form {
