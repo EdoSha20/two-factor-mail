@@ -1,6 +1,11 @@
 import nodemailer from 'nodemailer';
 import { env } from '$env/dynamic/private';
-
+console.log('SMTP-Einstellungen:', {
+    host: env.SMTP_HOST,
+    port: env.SMTP_PORT,
+    user: env.SMTP_USER,
+    passwordLength: env.SMTP_PASSWORD?.length
+});
 // Verbindung zu SMTP2GO mit verschlüsselter Übertragung
 const transporter = nodemailer.createTransport({
     host: env.SMTP_HOST,

@@ -4,7 +4,6 @@ import { randomInt, randomBytes, createHash } from 'node:crypto';
 import { db } from '$lib/server/db.js';
 import { sendLoginCode } from '$lib/server/mail.js';
 
-// Einen Wert als SHA-256-Hash speichern
 function hash(value) {
     return createHash('sha256').update(value).digest('hex');
 }
@@ -25,6 +24,7 @@ export const actions = {
             });
         }
 
+        // Benutzer suchen
         const [users] = await db.execute(
             'SELECT id, email, password_hash FROM users WHERE email = ?',
             [email]
@@ -32,6 +32,7 @@ export const actions = {
 
         const user = users[0];
 
+        // Passwort prüfen
         if (!user || !(await bcrypt.compare(password, user.password_hash))) {
             return fail(400, {
                 message: 'E-Mail oder Passwort ist falsch.'
@@ -53,12 +54,11 @@ export const actions = {
             });
         }
 
-        // Zufälliger sechsstelliger Code, auch mit führenden Nullen
+        // Code und zufälliges Token für diesen Login erzeugen
         const code = String(randomInt(0, 1000000)).padStart(6, '0');
-
-        // Verbindet diesen Login-Versuch mit diesem Browser
         const challenge = randomBytes(32).toString('hex');
 
+        // Nur Hashes in der Datenbank speichern
         await db.execute(
             `INSERT INTO login_codes
              (user_id, challenge_hash, code_hash, expires_at, created_at)
@@ -73,8 +73,14 @@ export const actions = {
 
         try {
             await sendLoginCode(user.email, code);
-        } catch {
-            // Bei fehlgeschlagenem Mailversand den Code entfernen
+        } catch (error) {
+            // SMTP-Fehler im Terminal anzeigen
+            console.error(
+                'SMTP-Fehler:',
+                error.code,
+                error.response
+            );
+
             await db.execute(
                 'DELETE FROM login_codes WHERE challenge_hash = ?',
                 [hash(challenge)]
@@ -85,7 +91,7 @@ export const actions = {
             });
         }
 
-        // Dieses Cookie ist noch keine angemeldete Session!
+        // Noch keine Session: zuerst muss der Code bestätigt werden
         cookies.set('challenge', challenge, {
             path: '/',
             httpOnly: true,
