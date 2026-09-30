@@ -1,18 +1,22 @@
 import { fail, redirect } from '@sveltejs/kit';
 
-import bcrypt from 'bcryptjs';
-
-import { randomInt, randomBytes, createHash } from 'node:crypto';
+import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 
 import { db } from '$lib/server/db.js';
-
-import { sendLoginCode } from '$lib/server/mail.js';
  
-// Einen Wert als SHA-256-Hash speichern
-
 function hash(value) {
 
     return createHash('sha256').update(value).digest('hex');
+
+}
+ 
+export function load({ cookies }) {
+
+    if (!cookies.get('challenge')) {
+
+        redirect(303, '/login');
+
+    }
 
 }
  
@@ -20,143 +24,151 @@ export const actions = {
 
     default: async ({ request, cookies, url }) => {
 
+        const challenge = cookies.get('challenge');
+
         const data = await request.formData();
- 
-        const email = String(data.get('email') || '')
 
-            .trim()
+        const code = String(data.get('code') || '').trim();
+ 
+        if (!challenge || !/^[a-f0-9]{64}$/.test(challenge)) {
 
-            .toLowerCase();
+            redirect(303, '/login');
+
+        }
  
-        const password = String(data.get('password') || '');
- 
-        if (!email || !password) {
+        if (!/^\d{6}$/.test(code)) {
 
             return fail(400, {
 
-                message: 'Bitte E-Mail und Passwort eingeben.'
+                message: 'Bitte sechs Ziffern eingeben.'
 
             });
 
         }
  
-        const [users] = await db.execute(
-
-            'SELECT id, email, password_hash FROM users WHERE email = ?',
-
-            [email]
-
-        );
- 
-        const user = users[0];
- 
-        if (!user || !(await bcrypt.compare(password, user.password_hash))) {
-
-            return fail(400, {
-
-                message: 'E-Mail oder Passwort ist falsch.'
-
-            });
-
-        }
- 
-        // Höchstens drei Codes in 15 Minuten anfordern
-
-        const [requests] = await db.execute(
-
-            `SELECT COUNT(*) AS total
-
-             FROM login_codes
-
-             WHERE user_id = ?
-
-             AND created_at > UTC_TIMESTAMP() - INTERVAL 15 MINUTE`,
-
-            [user.id]
-
-        );
- 
-        if (requests[0].total >= 3) {
-
-            return fail(429, {
-
-                message: 'Zu viele Codes angefordert. Bitte später versuchen.'
-
-            });
-
-        }
- 
-        // Zufälliger sechsstelliger Code, auch mit führenden Nullen
-
-        const code = String(randomInt(0, 1000000)).padStart(6, '0');
- 
-        // Verbindet diesen Login-Versuch mit diesem Browser
-
-        const challenge = randomBytes(32).toString('hex');
- 
-        await db.execute(
-
-            `INSERT INTO login_codes
-
-             (user_id, challenge_hash, code_hash, expires_at, created_at)
-
-             VALUES (?, ?, ?, UTC_TIMESTAMP() + INTERVAL 10 MINUTE,
-
-                     UTC_TIMESTAMP())`,
-
-            [
-
-                user.id,
-
-                hash(challenge),
-
-                hash(`${challenge}:${code}`)
-
-            ]
-
-        );
+        const connection = await db.getConnection();
  
         try {
 
-            await sendLoginCode(user.email, code);
+            await connection.beginTransaction();
+ 
+            // Sperre verhindert gleichzeitige Verwendung desselben Codes
 
-        } catch {
+            const [rows] = await connection.execute(
 
-            // Bei fehlgeschlagenem Mailversand den Code entfernen
+                `SELECT id, user_id, code_hash, attempts,
 
-            await db.execute(
+                        expires_at > UTC_TIMESTAMP() AS valid
 
-                'DELETE FROM login_codes WHERE challenge_hash = ?',
+                 FROM login_codes
+
+                 WHERE challenge_hash = ?
+
+                 FOR UPDATE`,
 
                 [hash(challenge)]
 
             );
  
-            return fail(502, {
+            const entry = rows[0];
+ 
+            if (!entry || !entry.valid || entry.attempts >= 5) {
 
-                message: 'E-Mail konnte nicht gesendet werden.'
+                await connection.commit();
+
+                cookies.delete('challenge', { path: '/' });
+ 
+                return fail(400, {
+
+                    message: 'Code abgelaufen oder gesperrt. Bitte neu anmelden.'
+
+                });
+
+            }
+ 
+            const enteredHash = hash(`${challenge}:${code}`);
+ 
+            const correct = timingSafeEqual(
+
+                Buffer.from(entry.code_hash, 'hex'),
+
+                Buffer.from(enteredHash, 'hex')
+
+            );
+ 
+            if (!correct) {
+
+                await connection.execute(
+
+                    'UPDATE login_codes SET attempts = attempts + 1 WHERE id = ?',
+
+                    [entry.id]
+
+                );
+ 
+                await connection.commit();
+ 
+                return fail(400, {
+
+                    message: 'Code falsch. Maximal fünf Versuche.'
+
+                });
+
+            }
+ 
+            // Code verbrauchen; Eintrag bleibt für das Anforderungslimit erhalten
+
+            await connection.execute(
+
+                'UPDATE login_codes SET expires_at = UTC_TIMESTAMP() WHERE id = ?',
+
+                [entry.id]
+
+            );
+ 
+            const token = randomBytes(32).toString('hex');
+ 
+            await connection.execute(
+
+                `INSERT INTO sessions (user_id, token_hash, expires_at)
+
+                 VALUES (?, ?, UTC_TIMESTAMP() + INTERVAL 1 DAY)`,
+
+                [entry.user_id, hash(token)]
+
+            );
+ 
+            await connection.commit();
+ 
+            cookies.delete('challenge', { path: '/' });
+ 
+            cookies.set('session', token, {
+
+                path: '/',
+
+                httpOnly: true,
+
+                sameSite: 'lax',
+
+                secure: url.protocol === 'https:',
+
+                maxAge: 86400
 
             });
 
+        } catch (error) {
+
+            await connection.rollback();
+
+            throw error;
+
+        } finally {
+
+            connection.release();
+
         }
  
-        // Dieses Cookie ist noch keine angemeldete Session!
-
-        cookies.set('challenge', challenge, {
-
-            path: '/',
-
-            httpOnly: true,
-
-            sameSite: 'lax',
-
-            secure: url.protocol === 'https:',
-
-            maxAge: 600
-
-        });
- 
-        redirect(303, '/verify');
+        redirect(303, '/dashboard');
 
     }
 
