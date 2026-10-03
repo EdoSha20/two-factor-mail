@@ -9,24 +9,15 @@
 <form method="POST">
 <label for="code">Login-Code</label>
 <input
-
-        id="code"
-
-        name="code"
-
-        type="text"
-
-        inputmode="numeric"
-
-        pattern="[0-9]{6}"
-
-        maxlength="6"
-
-        autocomplete="one-time-code"
-
-        required
-
-    />
+    id="code"
+    name="code"
+    type="text"
+    inputmode="numeric"
+    minlength="6"
+    maxlength="6"
+    autocomplete="one-time-code"
+    required
+/>
  
     <button type="submit">Code prüfen</button>
 </form>
