@@ -7,3 +7,7 @@
 <p>Willkommen, <strong>{data.email}</strong>.</p>
 
 <p>Dein Passwort und dein E-Mail-Code wurden bestätigt.</p>
+
+<form method="POST" action="/logout">
+<button type="submit">Abmelden</button>
+</form>
