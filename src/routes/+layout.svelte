@@ -1,9 +1,20 @@
 <script>
-	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
 
+	import './layout.css';
+
+	import favicon from '$lib/assets/favicon.svg';
+ 
 	let { children } = $props();
 </script>
-
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
-{@render children()}
+ 
+<svelte:head>
+<title>Two Factor Mail</title>
+<link rel="icon" href={favicon} />
+</svelte:head>
+ 
+<main>
+<div class="site-name">TWO FACTOR MAIL</div>
+ 
+	{@render children()}
+</main>
+ 

@@ -1,3 +1,124 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+ 
+:root {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #303b33;
+	background: #fbf7f5;
+}
+ 
+* {
+	box-sizing: border-box;
+}
+ 
+body {
+	margin: 0;
+	border-top: 8px solid #eacdd2;
+}
+ 
+main {
+	width: min(480px, calc(100% - 48px));
+	margin: 64px 0 80px 8%;
+}
+ 
+.site-name {
+	margin-bottom: 48px;
+	color: #526b58;
+	font-size: 13px;
+	font-weight: bold;
+	letter-spacing: 1.5px;
+}
+ 
+h1 {
+	margin: 0 0 16px;
+	font-family: Georgia, 'Times New Roman', serif;
+	font-size: clamp(30px, 5vw, 40px);
+	font-weight: normal;
+	line-height: 1.2;
+}
+ 
+p {
+	margin: 0 0 24px;
+	color: #59635b;
+	line-height: 1.7;
+}
+ 
+strong {
+	color: #303b33;
+}
+ 
+form {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 12px;
+	margin-top: 32px;
+}
+ 
+label {
+	font-size: 14px;
+	font-weight: bold;
+}
+ 
+input {
+	width: 100%;
+	padding: 13px 14px;
+	border: 1px solid #b8c5ba;
+	border-radius: 2px;
+	background: #fff;
+	color: #303b33;
+	font: inherit;
+}
+ 
+input:focus {
+	border-color: #526b58;
+	outline: 2px solid #526b58;
+	outline-offset: 2px;
+	box-shadow: none;
+}
+ 
+button {
+	align-self: flex-start;
+	margin-top: 12px;
+	padding: 12px 26px;
+	border: 1px solid #526b58;
+	border-radius: 2px;
+	background: #526b58;
+	color: #fff;
+	font: inherit;
+	cursor: pointer;
+}
+ 
+button:hover {
+	background: #405645;
+}
+ 
+button:focus-visible {
+	outline: 2px solid #526b58;
+	outline-offset: 3px;
+}
+ 
+[role='status'] {
+	margin-top: 24px;
+	padding: 14px 16px;
+	border-left: 3px solid #a46a78;
+	background: #f3e2e6;
+	color: #503a40;
+}
+ 
+a {
+	color: #405645;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+ 
+@media (max-width: 600px) {
+	main {
+		margin: 36px 24px 60px;
+	}
+ 
+	.site-name {
+		margin-bottom: 36px;
+	}
+}
