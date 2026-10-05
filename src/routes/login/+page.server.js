@@ -4,20 +4,24 @@ import { randomInt, randomBytes, createHash } from 'node:crypto';
 import { db } from '$lib/server/db.js';
 import { sendLoginCode } from '$lib/server/mail.js';
 
+// Einen Wert als SHA-256-Hash zurückgeben
 function hash(value) {
     return createHash('sha256').update(value).digest('hex');
 }
 
 export const actions = {
     default: async ({ request, cookies, url }) => {
+        // Formulardaten lesen
         const data = await request.formData();
 
+        // Leerzeichen entfernen und E-Mail kleinschreiben
         const email = String(data.get('email') || '')
             .trim()
             .toLowerCase();
 
         const password = String(data.get('password') || '');
 
+        // Beide Eingaben sind erforderlich
         if (!email || !password) {
             return fail(400, {
                 message: 'Bitte E-Mail und Passwort eingeben.'
@@ -72,6 +76,7 @@ export const actions = {
         );
 
         try {
+            // Code an die E-Mail des Benutzers senden
             await sendLoginCode(user.email, code);
         } catch (error) {
             // SMTP-Fehler im Terminal anzeigen
@@ -81,6 +86,7 @@ export const actions = {
                 error.response
             );
 
+            // Bei einem Versandfehler den Code entfernen
             await db.execute(
                 'DELETE FROM login_codes WHERE challenge_hash = ?',
                 [hash(challenge)]
@@ -100,6 +106,7 @@ export const actions = {
             maxAge: 600
         });
 
+        // Zur Code-Eingabe weiterleiten
         redirect(303, '/verify');
     }
 };

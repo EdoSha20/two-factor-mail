@@ -1,0 +1,160 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Sequenzdiagramm" id="0">
+    <mxGraphModel dx="1482" dy="975" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;strokeColor=none;fontSize=24;fontStyle=1;" value="Anmeldung mit E-Mail-Code" vertex="1">
+          <mxGeometry height="40" width="1000" x="40" y="15" as="geometry" />
+        </mxCell>
+        <mxCell id="p0" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;" value="Benutzer / Browser" vertex="1">
+          <mxGeometry height="50" width="170" x="45" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="life0" edge="1" parent="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="130" as="sourcePoint" />
+            <mxPoint x="130" y="980" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p1" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;" value="SvelteKit-Server" vertex="1">
+          <mxGeometry height="50" width="170" x="345" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="life1" edge="1" parent="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="130" as="sourcePoint" />
+            <mxPoint x="430" y="980" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;" value="MySQL" vertex="1">
+          <mxGeometry height="50" width="170" x="655" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="life2" edge="1" parent="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="740" y="130" as="sourcePoint" />
+            <mxPoint x="740" y="980" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p3" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;" value="E-Mail-Dienst" vertex="1">
+          <mxGeometry height="50" width="170" x="935" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="life3" edge="1" parent="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1020" y="130" as="sourcePoint" />
+            <mxPoint x="1020" y="980" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="f1" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;shape=umlFrame;fillColor=none;verticalAlign=top;align=left;width=45;height=25;" value="" vertex="1">
+          <mxGeometry height="195" width="760" x="40" y="305" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;shape=umlFrame;fillColor=none;verticalAlign=top;align=left;width=45;height=25;" value="" vertex="1">
+          <mxGeometry height="235" width="760" x="40" y="705" as="geometry" />
+        </mxCell>
+        <mxCell id="cond1" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;strokeColor=none;fillColor=none;fontSize=13;align=left;" value="[Passwort falsch]" vertex="1">
+          <mxGeometry height="24" width="240" x="95" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="cond2" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;strokeColor=none;fillColor=none;fontSize=13;align=left;" value="[Passwort richtig]" vertex="1">
+          <mxGeometry height="24" width="240" x="95" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="cond3" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;strokeColor=none;fillColor=none;fontSize=13;align=left;" value="[Code ungültig oder abgelaufen]" vertex="1">
+          <mxGeometry height="24" width="330" x="95" y="710" as="geometry" />
+        </mxCell>
+        <mxCell id="cond4" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;strokeColor=none;fillColor=none;fontSize=13;align=left;" value="[Code gültig]" vertex="1">
+          <mxGeometry height="24" width="240" x="95" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="sep1" edge="1" parent="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="385" as="sourcePoint" />
+            <mxPoint x="800" y="385" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sep2" edge="1" parent="1" style="endArrow=none;dashed=1;strokeColor=#777777;">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="40" y="785" as="sourcePoint" />
+            <mxPoint x="800" y="785" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg0" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;" value="E-Mail und Passwort eingeben">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="175" as="sourcePoint" />
+            <mxPoint x="430" y="175" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg1" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;" value="Benutzer und Passwort-Hash laden">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="220" as="sourcePoint" />
+            <mxPoint x="740" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg2" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;dashed=1;" value="Benutzerdaten">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="740" y="260" as="sourcePoint" />
+            <mxPoint x="430" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg3" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;dashed=1;" value="Fehlermeldung anzeigen">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="365" as="sourcePoint" />
+            <mxPoint x="130" y="365" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg4" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;" value="Code-Hash und Ablaufzeit speichern">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="455" as="sourcePoint" />
+            <mxPoint x="740" y="455" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg5" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;" value="Code per E-Mail senden">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="530" as="sourcePoint" />
+            <mxPoint x="1020" y="530" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg6" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;dashed=1;" value="E-Mail mit sechsstelligen Code">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1020" y="575" as="sourcePoint" />
+            <mxPoint x="130" y="575" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg7" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;" value="Code eingeben">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="630" as="sourcePoint" />
+            <mxPoint x="430" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg8" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;" value="Gespeicherten Code laden">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="675" as="sourcePoint" />
+            <mxPoint x="740" y="675" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg9" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;dashed=1;" value="Fehlermeldung anzeigen">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="765" as="sourcePoint" />
+            <mxPoint x="130" y="765" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg10" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;" value="Code entwerten und Session speichern">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="840" as="sourcePoint" />
+            <mxPoint x="740" y="840" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="msg11" edge="1" parent="1" style="html=1;endArrow=block;endFill=1;strokeColor=#333333;fontSize=14;labelBackgroundColor=#ffffff;verticalAlign=bottom;dashed=1;" value="Session-Cookie setzen; Dashboard öffnen">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="430" y="900" as="sourcePoint" />
+            <mxPoint x="130" y="900" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="n1" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;shape=note;fontSize=13;" value="Passwort mit bcrypt prüfen" vertex="1">
+          <mxGeometry height="50" width="280" x="815" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="n2" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;shape=note;fontSize=13;" value="Bei richtigem Passwort:&#xa;zufälligen Code erzeugen" vertex="1">
+          <mxGeometry height="65" width="280" x="815" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="n3" parent="1" style="html=1;whiteSpace=wrap;fillColor=#ffffff;strokeColor=#333333;fontColor=#222222;fontSize=15;shape=note;fontSize=13;" value="Code-Hash, Ablaufzeit und&#xa;Fehlversuche prüfen" vertex="1">
+          <mxGeometry height="60" width="280" x="815" y="710" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

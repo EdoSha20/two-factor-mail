@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { db } from '$lib/server/db.js';
 
 export async function load({ cookies }) {
+    // Session-Token aus dem Cookie lesen
     const token = cookies.get('session');
 
     // Ohne gültiges Session-Cookie zurück zur Anmeldung
@@ -10,6 +11,7 @@ export async function load({ cookies }) {
         redirect(303, '/login');
     }
 
+    // Token hashen, um die gespeicherte Session zu suchen
     const tokenHash = createHash('sha256')
         .update(token)
         .digest('hex');
@@ -24,6 +26,7 @@ export async function load({ cookies }) {
         [tokenHash]
     );
 
+    // Ungültige oder abgelaufene Session entfernen
     if (!users[0]) {
         cookies.delete('session', { path: '/' });
         redirect(303, '/login');

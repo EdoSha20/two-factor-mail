@@ -1,10 +1,12 @@
 <script>
+    // Rückmeldung der Server-Action erhalten
     let { form } = $props();
 </script>
 
 <h1>Anmelden</h1>
 <p>Nach der Passwortprüfung bekommst du einen Code per E-Mail.</p>
 
+<!-- Anmeldedaten an den Server senden -->
 <form method="POST">
     <label for="email">E-Mail</label>
     <input
@@ -26,11 +28,14 @@
 
     <button type="submit">Code senden</button>
 </form>
+
+<!-- Meldung nach dem Absenden anzeigen -->
 {#if form?.message}
     <p role="status">{form.message}</p>
 {/if}
 
 <style>
+    /* Formularfelder untereinander anordnen */
     form {
         display: flex;
         flex-direction: column;
@@ -38,6 +43,7 @@
         max-width: 350px;
     }
 
+    /* Einheitliche Abstände und Schrift */
     input,
     button {
         padding: 10px;
